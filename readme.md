@@ -1,17 +1,16 @@
-# BirdCam
+# RaspPi YouTube Live Stream
 We have an outdoor fountain whose major purpose is to serve the birds that enjoy taking baths in it.  
 
 I wanted to view the birds at our fountain from anywhere on a Smart TV, tablet, phone, or PC.
 ## Streaming to A Smart TV
-To do this, I chose YouTube Live Streaming as the method.  I had no clue how to do this when I started this project.
-## Camera and Sending the Stream
-I chose to use a Zero W Raspberry Pi and the Raspberry Pi camera to do this.  Once again, I was clueless on how to do this.
-# Goal of this Document
-The goal of this document is to provide a method we can use to stream from a Raspberry Pi camera to a YouTube Live Stream.
+I used a Zero W Raspberry Pi and the Raspberry Pi camera to stream video to a YouTube Live Stream channel.
 
-If you are reading this __Please__ let me know how we can improve on the method!  What would you do differently?
+I learned a lot given I was clueless on how to do this.  Please let me know how this can be done better.
 
-So let our adventure begin!
+- TODO: Audio
+To simplify the build, the stream does not include audio.  My goal is to add this important feature once the webcam works awhile.
+
+Let our adventure begin!
 # YouTube Live Stuff
 This section discusses what we need to do prior to our Raspberry Pi sending audio/video to a YouTube Live Streaming channel.
 ## Get a Channel
@@ -31,7 +30,7 @@ Camera pointed at Fountain ==> raspivid captures raw h.264 video stream (pipes i
 The `raspivid` software is installed with the Rasp Pi OS.  It  is able to easily give us an `h264` video stream.  We then pipe the `h264` video stream to the `ffmpeg` software.  `ffmpeg` takes in the video and multiplexes it with a "fake" audio signal.  The audio/video channel is sent out onto the Internet by `ffmpeg` using the `RTMP` protocol and the key provided by my YouTube Live channel.
 
 - _TODO: Audio_
-Unfortunately for us, the camera does not include audio.  I hope to add this in after figuring out the video side.
+
 
 Here's the `raspivid` and `ffmpeg` commands I used:
 ```
