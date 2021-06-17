@@ -8,7 +8,7 @@ I used a Zero W Raspberry Pi and the Raspberry Pi camera to stream video to a Yo
 I learned a lot given I was clueless on how to do this.  Please let me know how this can be done better.
 
 - TODO: Audio
-To simplify the build, the stream does not include audio.  My goal is to add this important feature once the webcam works awhile.
+_To simplify the build, the stream does not include audio.  My goal is to add this important feature once the webcam works awhile._
 
 Let our adventure begin!
 # YouTube Live Stuff
@@ -29,9 +29,6 @@ Camera pointed at Fountain ==> raspivid captures raw h.264 video stream (pipes i
 ```
 The `raspivid` software is installed with the Rasp Pi OS.  It  is able to easily give us an `h264` video stream.  We then pipe the `h264` video stream to the `ffmpeg` software.  `ffmpeg` takes in the video and multiplexes it with a "fake" audio signal.  The audio/video channel is sent out onto the Internet by `ffmpeg` using the `RTMP` protocol and the key provided by my YouTube Live channel.
 
-- _TODO: Audio_
-
-
 Here's the `raspivid` and `ffmpeg` commands I used:
 ```
 raspivid -o - -ih -t 0 -b 1000000 | ffmpeg -i - -f s16le -i /dev/zero -c:v copy -c:a aac -g 50 -f flv -flvflags no_duration_filesize rtmp://a.rtmp.youtube.com/live2/[YOUTUBE LIVE KEY]
@@ -45,7 +42,6 @@ Even after searching and reading other attempts at YouTube Live Streaming from a
 - [Rasp Pi Zero Camera Cable](https://www.adafruit.com/product/3157)
 
 _The step of getting the hardware connected/up and running is well documented in other places._
-- TODO - Add mic and audio once video is understood and working.
 # Software
 ## Install Rasp Pi and Camera Module
 _Follow the many [excellent guides](https://www.raspberrypi.org/documentation/installation/installing-images/) for installing Rasp Pi.  I tend to install the lite version and ssh in.  It does seem having the desktop makes some stuff easier, so having a spare monitor/keyboard just for a pi if I was dong many projects would be a convenient way to go..The camera software/config needs to be turned on. There are many great guides for doing this_
