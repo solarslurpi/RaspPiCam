@@ -1,29 +1,43 @@
 # BirdCam
-We have an outdoor fountain whose major purpose is to serve the birds that enjoy taking baths in it.  There are different birds that come by.  There are different interactions that happen between the birds.
-
-I found the brief times I have watched the fountain when birds are there to brings a joyous sense of happiness.  When I could not be in our backyard, I found myself wondering if there were any birds there.  Was there a bird dipping their bodies in the water and then shaking the water off?  Was a big ol' bluebird squawking at a few of the finches that come by (typically fidgeting and fighting amongst themselves)?
+We have an outdoor fountain whose major purpose is to serve the birds that enjoy taking baths in it.  
 
 I wanted to view the birds at our fountain from anywhere on a Smart TV, tablet, phone, or PC.
+## Streaming to A Smart TV
+To do this, I chose YouTube Live Streaming as the method.  I had no clue how to do this when I started this project.
+## Camera and Sending the Stream
+I chose to use a Zero W Raspberry Pi and the Raspberry Pi camera to do this.  Once again, I was clueless on how to do this.
+# Goal of this Document
+The goal of this document is to provide a method we can use to stream from a Raspberry Pi camera to a YouTube Live Stream.
 
-To do this, I decided to build a birdcam using a Raspberry Pi.
-
-Since building stuff provides a sense of joy and accomplishment I built a birdcam based around a Raspberry Pi.
-
-Besides, it always amazes me how much we learn AND how much the many gifted folks on the Internet have shared what they have learned when we take a journey through the DIY world.  
+If you are reading this __Please__ let me know how we can improve on the method!  What would you do differently?
 
 So let our adventure begin!
+# YouTube Live Stuff
+This section discusses what we need to do prior to our Raspberry Pi sending audio/video to a YouTube Live Streaming channel.
+## Get a Channel
+We need a live stream channel for a camera to send it's audio/video to.
 
-# Streaming Method
+I learned we can create multiple live stream channels.  We start with a Google account, then we go to our account's list of channels `https://www.youtube.com/account`.  From here we create a new channel and click buttons until we get to Live Streaming.  It takes 24 hours for the live stream to be activated.  I learned this by browsing [How to Manage Multiple YouTube Channels: Tips and Tools](https://blog.hootsuite.com/multiple-youtube-channels/).
+## Get a Permanent URL
+- _TODO - Permanent URL_
+I am waiting for 24 hours to go by so that I can use the fountain cam channel. I hope to use the info in the article [How to get a Permanent Link for a YouTube Livestream](https://techswift.org/2020/09/30/how-to-get-a-permanent-link-for-a-youtube-livestream/)...
+# Raspberry Pi Stuff
+This section gives us a high level view of the software running on the Rasp Pi that gets us to an encoding and stream that is then sent to YouTube over wifi.
+## Software Flow
+Here's the flow we'll be implementing
 ```
 Camera pointed at Fountain ==> raspivid captures raw h.264 video stream (pipes into...)==> ffmpeg creates "fake" audio + copies h.264 video stream then outputs rtmp stream with YouTube Live Key ==> YouTube Live shows stream
 ```
-Key to the streaming method is using a Rasp Pi Camera attached to the Zero W.  This way, the `raspivid` software that is installed with the Rasp Pi OS is able to easily give us an h264 video stream.  We then pipe the h264 video stream to the `ffmpeg` software.  `ffmpeg` takes in the video and multiplexes it with a "fake" audio signal.  The audio/video channel is sent out onto the Internet by `ffmpeg` using the `RTMP` protocol and the key provided by my YouTube Live channel.
+The `raspivid` software is installed with the Rasp Pi OS.  It  is able to easily give us an `h264` video stream.  We then pipe the `h264` video stream to the `ffmpeg` software.  `ffmpeg` takes in the video and multiplexes it with a "fake" audio signal.  The audio/video channel is sent out onto the Internet by `ffmpeg` using the `RTMP` protocol and the key provided by my YouTube Live channel.
+
+- _TODO: Audio_
+Unfortunately for us, the camera does not include audio.  I hope to add this in after figuring out the video side.
 
 Here's the `raspivid` and `ffmpeg` commands I used:
 ```
 raspivid -o - -ih -t 0 -b 1000000 | ffmpeg -i - -f s16le -i /dev/zero -c:v copy -c:a aac -g 50 -f flv -flvflags no_duration_filesize rtmp://a.rtmp.youtube.com/live2/[YOUTUBE LIVE KEY]
 ```
-Even after searching and reading other attempts at YouTube Live Streaming from a Raspberry Pie, I spent __a significant amount of time__ figuring out what commands work best.  I plan to document the parameters I picked in more detail below.
+Even after searching and reading other attempts at YouTube Live Streaming from a Raspberry Pie, I spent __a significant amount of time__ figuring out what commands work best.  The options used with the commands are documented below.
 # Hardware
 - [Rasp Pi Zero W](https://www.adafruit.com/product/3400) 
 - [Power cord for Rasp Pi](https://www.adafruit.com/product/1995)
